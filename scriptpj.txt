@@ -14,7 +14,7 @@ CREATE TABLE Customer
      Address VARCHAR(60) ,
      Phone  NUMBER(15) ,
      Sex VARCHAR(5) CHECK(sex IN('F','M')) ,
-     CusTypeCode NUMBER() ,
+     CusTypeCode NUMBER(10) ,
      CONSTRAINT Customer_CusType FOREIGN KEY (CusTypeCode) REFERENCES CustomerType(CusTypeCode)
 );
 
