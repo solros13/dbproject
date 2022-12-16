@@ -1,0 +1,100 @@
+CREATE SEQUENCE Auto_Generate
+   START WITH 1
+   INCREMENT BY 1
+   NOCACHE;
+
+CREATE TABLE CustomerType
+(
+     CusTypeCode  NUMBER(10) NOT NULL PRIMARY KEY DEFAULT Auto_Generate.NEXTVAL,
+     TypeName VARCHAR(50) NOT NULL,
+     CONSTRAINT CustomerType_TypeName_UQ UNIQUE (TypeName)
+);
+
+===========================================
+--oracle live 
+
+CREATE TABLE CustomerType
+(
+     CusTypeCode NUMBER(10) NOT NULL PRIMARY KEY ,
+     TypeName VARCHAR(50) NOT NULL,
+     UNIQUE (TypeName)
+);
+
+-- cutomer
+CREATE TABLE Customer 
+(
+     CusCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     Fname VARCHAR(50) NOT NULL,
+     Lname VARCHAR(50) NOT NULL,
+     Address VARCHAR(60) ,
+     Phone  NUMBER(15) ,
+     Sex VARCHAR(2) CHECK(sex IN('F','M')) ,
+     CusTypeCode NUMBER(10) ,
+     CONSTRAINT Customer_CusType FOREIGN KEY (CusTypeCode) REFERENCES CustomerType(CusTypeCode)
+);
+
+--receiver
+CREATE TABLE Receiver
+(
+     RevCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     Fname VARCHAR(50) NOT NULL,
+     Lname VARCHAR(50) NOT NULL,
+     Address VARCHAR(60) ,
+     Phone NUMBER(15) 
+);
+
+--department
+CREATE TABLE Department
+(
+     DeptCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     DeptName VARCHAR(50) NOT NULL,
+     MgrStartDate VARCHAR(60) ,
+     MgrCode NUMBER(10)
+);
+
+-- employee
+CREATE TABLE Employee
+(
+     EmpCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     Fname VARCHAR(50) NOT NULL,
+     Lname VARCHAR(50) NOT NULL,
+     Address VARCHAR(60) ,
+     Phone  NUMBER(15) ,
+     Sex VARCHAR(2) CHECK(sex IN('F','M')) ,
+     WorkStatus VARCHAR(5) CHECK(WorkStatus IN('W','Q')),
+     DeptCode  NUMBER(10),
+     SupEmpCode NUMBER(10) DEFAULT NULL,
+     FOREIGN KEY (DeptCode) REFERENCES Department(DeptCode),
+     CONSTRAINT Employee_SUP FOREIGN KEY (SupEmpCode) REFERENCES Employee(EmpCode)
+);
+
+--WorkList
+CREATE TABLE WorkList
+(
+     WorkCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     WorkName VARCHAR(50) NOT NULL,
+     UNIQUE (WorkName)
+);
+CREATE TABLE Bill
+(
+     BillCode NUMBER(10) NOT NULL PRIMARY KEY ,
+     TatalPrice Number(10) DEFAULT NULL
+   
+);
+
+--parcel
+CREATE TABLE Parcel
+(
+     PrcCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     PrcDetail VARCHAR(50) NOT NULL,
+     SendDate VARCHAR(30) NOT NULL,
+     RevDate VARCHAR(30) NOT NULL,
+     Price Number(10) NOT NULL,
+     CusCode NUMBER(10),
+     RevCodeNUMBER(10),
+     BillCode NUMBER(10),
+     FOREIGN KEY(CusCode) REFERENCES Customer(CusCode),
+     FOREIGN KEY(RevCode) REFERENCES Receiver(RevCode),
+     FOREIGN KEY(BillCode) REFERENCES Bill(BillCode)
+);
+=
