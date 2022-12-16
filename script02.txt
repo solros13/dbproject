@@ -1,18 +1,4 @@
-CREATE SEQUENCE Auto_Generate
-   START WITH 1
-   INCREMENT BY 1
-   NOCACHE;
-
-CREATE TABLE CustomerType
-(
-     CusTypeCode  NUMBER(10) NOT NULL PRIMARY KEY DEFAULT Auto_Generate.NEXTVAL,
-     TypeName VARCHAR(50) NOT NULL,
-     CONSTRAINT CustomerType_TypeName_UQ UNIQUE (TypeName)
-);
-
-===========================================
---oracle live 
-
+--custype
 CREATE TABLE CustomerType
 (
      CusTypeCode VARCHAR(5) NOT NULL PRIMARY KEY ,
@@ -33,6 +19,7 @@ CREATE TABLE Customer
      CONSTRAINT Customer_CusType FOREIGN KEY (CusTypeCode) REFERENCES CustomerType(CusTypeCode)
 );
 
+
 --receiver
 CREATE TABLE Receiver
 (
@@ -49,8 +36,8 @@ CREATE TABLE Department
      DeptCode  VARCHAR(5) NOT NULL PRIMARY KEY ,
      DeptName VARCHAR(50) NOT NULL,
      MgrStartDate VARCHAR(60) ,
-     MgrCode VARCHAR(5),
-     FOREIGN KEY (MgrCode) REFERENCES Employee(EmpCode)
+     MgrCode VARCHAR(5)
+    
 );
 
 -- employee
@@ -91,11 +78,17 @@ CREATE TABLE Parcel
      SendDate VARCHAR(30) NOT NULL,
      RevDate VARCHAR(30) NOT NULL,
      Price Number(10) NOT NULL,
-     CusCode NUMBER(10),
-     RevCodeNUMBER(10),
+     CusCode VARCHAR(5),
+     RevCode VARCHAR(5),
      BillCode NUMBER(10),
      FOREIGN KEY(CusCode) REFERENCES Customer(CusCode),
      FOREIGN KEY(RevCode) REFERENCES Receiver(RevCode),
      FOREIGN KEY(BillCode) REFERENCES Bill(BillCode)
 );
+
+
+----alter foreign key to department
+
+ALTER TABLE Department
+ADD FOREIGN KEY (MgrCode) REFERENCES Employee(EmpCode);
 
