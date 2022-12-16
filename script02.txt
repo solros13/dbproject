@@ -15,7 +15,7 @@ CREATE TABLE CustomerType
 
 CREATE TABLE CustomerType
 (
-     CusTypeCode NUMBER(10) NOT NULL PRIMARY KEY ,
+     CusTypeCode VARCHAR(5) NOT NULL PRIMARY KEY ,
      TypeName VARCHAR(50) NOT NULL,
      UNIQUE (TypeName)
 );
@@ -23,20 +23,20 @@ CREATE TABLE CustomerType
 -- cutomer
 CREATE TABLE Customer 
 (
-     CusCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     CusCode  VARCHAR(5) NOT NULL PRIMARY KEY ,
      Fname VARCHAR(50) NOT NULL,
      Lname VARCHAR(50) NOT NULL,
      Address VARCHAR(60) ,
      Phone  NUMBER(15) ,
      Sex VARCHAR(2) CHECK(sex IN('F','M')) ,
-     CusTypeCode NUMBER(10) ,
+     CusTypeCode VARCHAR(5) ,
      CONSTRAINT Customer_CusType FOREIGN KEY (CusTypeCode) REFERENCES CustomerType(CusTypeCode)
 );
 
 --receiver
 CREATE TABLE Receiver
 (
-     RevCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     RevCode  VARCHAR(5) NOT NULL PRIMARY KEY ,
      Fname VARCHAR(50) NOT NULL,
      Lname VARCHAR(50) NOT NULL,
      Address VARCHAR(60) ,
@@ -46,24 +46,25 @@ CREATE TABLE Receiver
 --department
 CREATE TABLE Department
 (
-     DeptCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     DeptCode  VARCHAR(5) NOT NULL PRIMARY KEY ,
      DeptName VARCHAR(50) NOT NULL,
      MgrStartDate VARCHAR(60) ,
-     MgrCode NUMBER(10)
+     MgrCode VARCHAR(5),
+     FOREIGN KEY (MgrCode) REFERENCES Employee(EmpCode)
 );
 
 -- employee
 CREATE TABLE Employee
 (
-     EmpCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     EmpCode  VARCHAR(5) NOT NULL PRIMARY KEY ,
      Fname VARCHAR(50) NOT NULL,
      Lname VARCHAR(50) NOT NULL,
      Address VARCHAR(60) ,
      Phone  NUMBER(15) ,
      Sex VARCHAR(2) CHECK(sex IN('F','M')) ,
-     WorkStatus VARCHAR(5) CHECK(WorkStatus IN('W','Q')),
-     DeptCode  NUMBER(10),
-     SupEmpCode NUMBER(10) DEFAULT NULL,
+     WorkStatus VARCHAR(2) CHECK(WorkStatus IN('W','Q')),
+     DeptCode  VARCHAR(5),
+     SupEmpCode VARCHAR(5) DEFAULT NULL,
      FOREIGN KEY (DeptCode) REFERENCES Department(DeptCode),
      CONSTRAINT Employee_SUP FOREIGN KEY (SupEmpCode) REFERENCES Employee(EmpCode)
 );
@@ -75,17 +76,17 @@ CREATE TABLE WorkList
      WorkName VARCHAR(50) NOT NULL,
      UNIQUE (WorkName)
 );
+
 CREATE TABLE Bill
 (
      BillCode NUMBER(10) NOT NULL PRIMARY KEY ,
-     TatalPrice Number(10) DEFAULT NULL
-   
+     TatalPrice Number(10) DEFAULT NULL 
 );
 
 --parcel
 CREATE TABLE Parcel
 (
-     PrcCode  NUMBER(10) NOT NULL PRIMARY KEY ,
+     PrcCode  VARCHAR(5) NOT NULL PRIMARY KEY ,
      PrcDetail VARCHAR(50) NOT NULL,
      SendDate VARCHAR(30) NOT NULL,
      RevDate VARCHAR(30) NOT NULL,
@@ -97,4 +98,4 @@ CREATE TABLE Parcel
      FOREIGN KEY(RevCode) REFERENCES Receiver(RevCode),
      FOREIGN KEY(BillCode) REFERENCES Bill(BillCode)
 );
-=
+
